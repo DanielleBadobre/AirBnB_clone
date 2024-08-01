@@ -7,7 +7,7 @@ import os
 
 class FileStorage:
     """ serializes and deserialize instances to and from JSON file """
-    __file_path = 'file.json'
+    __file_path = "file.json"
     __objects = {}
 
     def all(self):
@@ -29,9 +29,14 @@ class FileStorage:
 
     def reload(self):
         """deserializes the JSON file to __objects"""
-        if os.path.exists(self.__file_path) is True:
+        if os.path.exists(self.__file_path):
             with open(self.__file_path, 'r') as f:
-                vari = json.load(f)
-                for elem in vari:
-                    aux = classes[vari[elem]['__class__']]
-                    self.__objects[elem] = aux(**(vari[elem]))
+                try:
+                    data = json.load(f)
+                    for key, value in data.items():
+                        className = value["__class__"]
+                        cls = globals().get(className)
+                        if cls:
+                            self.__objects[key] = cls(**value)
+                except Exception:
+                    pass
