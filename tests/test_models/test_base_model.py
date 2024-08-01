@@ -48,5 +48,27 @@ class TestBaseModel(unittest.TestCase):
                 self.model.created_at.isoformat())
         self.assertEqual(modelDict['updated_at'],\
                 self.model.updated_at.isoformat())
+    def testInitKwargs(self):
+        """Tests if init creates from kwargs"""
+        modelDict = self.model.to_dict()
+        recreatedModel = BaseModel(**modelDict)
+        self.assertEqual(recreatedModel.id, self.model.id)
+        self.assertEqual(recreatedModel.created_at.isoformat(),\
+                self.model.created_at.isoformat())
+        self.assertEqual(recreatedModel.updated_at.isoformat(),\
+                self.model.updated_at.isoformat())
+        self.assertEqual(recreatedModel.__class__.__name__,\
+                self.model.__class__.__name__)
+        self.assertIsInstance(recreatedModel.created_at, datetime)
+        self.assertIsInstance(recreatedModel.updated_at, datetime)
+    def testInitNoKwargs(self):
+        """ Tests if init creates without kwargs"""
+        newModel = BaseModel()
+        self.assertIsInstance(newModel.id, str)
+        self.assertIsInstance(newModel.created_at, datetime)
+        self.assertIsInstance(newModel.updated_at, datetime)
+        self.assertNotEqual(newModel.id, self.model.id)
+        self.assertNotEqual(newModel.created_at, self.model.created_at)
+        self.assertNotEqual(newModel.updated_at, self.model.updated_at)
 if __name__ == '__main__':
     unittest.main()
