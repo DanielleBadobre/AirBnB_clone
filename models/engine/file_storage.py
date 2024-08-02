@@ -39,4 +39,4 @@ class FileStorage:
                         if cls:
                             self.__objects[key] = cls(**value)
                 except Exception:
-                    pass
+                    return
