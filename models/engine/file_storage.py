@@ -3,7 +3,7 @@
 import json
 from models.base_model import BaseModel
 import os
-
+from models.user import User
 
 class FileStorage:
     """ serializes and deserialize instances to and from JSON file """
