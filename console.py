@@ -5,12 +5,25 @@ import cmd
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """ contains the entry point of the command interprete """
     prompt = '(hbnb)'
-    classes = {'BaseModel': BaseModel, 'User': User}
+    classes = {
+        "BaseModel": BaseModel,
+        "User": User,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review
+    }
 
     def do_create(self, class_name):
         """ Creates a new instance of BaseModel, saves it (to the JSON file)
