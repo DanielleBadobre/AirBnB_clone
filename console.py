@@ -145,6 +145,14 @@ class HBNBCommand(cmd.Cmd):
     def help_EOF(self):
         print("Exits programm without formatting\n")
 
+    def default(self, line):
+        """Override default method to handlle <class name>.all()"""
+        if '.' in line:
+            class_name, command = line.split('.', 1)
+            if command == "all()":
+                if class_name in self.classes:
+                    self.do_all(class_name)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
