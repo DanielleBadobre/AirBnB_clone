@@ -2,6 +2,7 @@ import unittest
 from models.amenity import Amenity
 from models.base_model import BaseModel
 
+
 class TestAmenity(unittest.TestCase):
     def setUp(self):
         """Set up the Amenity instance for testing"""
@@ -26,6 +27,7 @@ class TestAmenity(unittest.TestCase):
     def tearDown(self):
         """Clean up after each test"""
         del self.amenity
+
 
 if __name__ == "__main__":
     unittest.main()

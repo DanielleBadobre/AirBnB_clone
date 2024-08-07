@@ -9,6 +9,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
+
 class TestFileStorage(unittest.TestCase):
 
     def setUp(self):
@@ -56,7 +57,8 @@ class TestFileStorage(unittest.TestCase):
 
     def test_serialization_deserialization(self):
         """Test serialization and deserialization of all new classes."""
-        models = [self.model, self.user, self.state, self.city, self.amenity, self.place, self.review]
+        models = [self.model, self.user, self.state, self.city, self.amenity,
+                  self.place, self.review]
         for model in models:
             self.storage.new(model)
         self.storage.save()
@@ -64,6 +66,7 @@ class TestFileStorage(unittest.TestCase):
         for model in models:
             key = f"{type(model).__name__}.{model.id}"
             self.assertIn(key, self.storage.all())
+
 
 if __name__ == '__main__':
     unittest.main()

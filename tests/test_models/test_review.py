@@ -2,6 +2,7 @@ import unittest
 from models.review import Review
 from models.base_model import BaseModel
 
+
 class TestReview(unittest.TestCase):
     def setUp(self):
         """Set up the Review instance for testing"""
@@ -32,6 +33,7 @@ class TestReview(unittest.TestCase):
     def tearDown(self):
         """Clean up after each test"""
         del self.review
+
 
 if __name__ == "__main__":
     unittest.main()

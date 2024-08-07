@@ -2,6 +2,7 @@ import unittest
 from models.city import City
 from models.base_model import BaseModel
 
+
 class TestCity(unittest.TestCase):
     def setUp(self):
         """Set up the City instance for testing"""
@@ -29,6 +30,7 @@ class TestCity(unittest.TestCase):
     def tearDown(self):
         """Clean up after each test"""
         del self.city
+
 
 if __name__ == "__main__":
     unittest.main()

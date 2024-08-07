@@ -2,6 +2,7 @@ import unittest
 from models.state import State
 from models.base_model import BaseModel
 
+
 class TestState(unittest.TestCase):
     def setUp(self):
         """Set up the State instance for testing"""
@@ -26,6 +27,7 @@ class TestState(unittest.TestCase):
     def tearDown(self):
         """Clean up after each test"""
         del self.state
+
 
 if __name__ == "__main__":
     unittest.main()
