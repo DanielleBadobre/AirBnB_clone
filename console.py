@@ -146,12 +146,36 @@ class HBNBCommand(cmd.Cmd):
         print("Exits programm without formatting\n")
 
     def default(self, line):
-        """Override default method to handlle <class name>.all()"""
+        """Override the default method to handle <class name>.show(<id>) and <class name>.all()"""
         if '.' in line:
-            class_name, command = line.split('.', 1)
-            if command == "all()":
-                if class_name in self.classes:
+            parts = line.split('.')
+            class_name = parts[0]
+            if len(parts) > 1:
+                command = parts[1]
+                if command == "all()":
                     self.do_all(class_name)
+                elif command.startswith("show(") and command.endswith(")"):
+                    id_str = command[5:-1]
+                    if id_str:
+                        self.do_show(f"{class_name} {id_str.strip()}")
+                    else:
+                        print("** instance id missing **")
+                else:
+                    print("** command doesn't exist **")
+        else:
+            print(f"*** Unknown syntax: {line}")
+
+    def do_count(self, class_name):
+        """Retrieve the number of instances of a class."""
+        if not class_name:
+            print("** class name missing **")
+            return
+        if class_name not in storage.classes():
+            print("** class doesn't exist **")
+            return
+
+        count = sum(1 for obj in storage.all().values() if obj.__class__.__name__ == class_name)
+        print(count)
 
 
 if __name__ == '__main__':
