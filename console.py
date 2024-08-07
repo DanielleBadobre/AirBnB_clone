@@ -154,6 +154,8 @@ class HBNBCommand(cmd.Cmd):
                 command = parts[1]
                 if command == "all()":
                     self.do_all(class_name)
+                elif command == "count()":
+                    self.do_count(class_name)
                 elif command.startswith("show(") and command.endswith(")"):
                     id_str = command[5:-1]
                     if id_str:
@@ -166,6 +168,13 @@ class HBNBCommand(cmd.Cmd):
                         self.do_destroy(f"{class_name} {id_str.strip()}")
                     else:
                         print("** instance id missing **")
+                elif command.startswith("update(") and command.endswith(")"):
+                    args = command[7:-1].split(', ')
+                    if len(args) == 3:
+                        id_str, attr_name, attr_value = args
+                        self.do_update(f"{class_name} {id_str.strip()} {attr_name.strip()} {attr_value.strip()}")
+                    else:
+                        print("** incorrect arguments for update **")
                 else:
                     print("** command doesn't exist **")
         else:
@@ -173,10 +182,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, class_name):
         """Retrieve the number of instances of a class."""
-        if not class_name:
-            print("** class name missing **")
-            return
-        if class_name not in storage.classes():
+        if class_name not in storage.classes:
             print("** class doesn't exist **")
             return
 
