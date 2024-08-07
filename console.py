@@ -10,6 +10,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+import json
 
 
 class HBNBCommand(cmd.Cmd):
@@ -169,10 +170,20 @@ class HBNBCommand(cmd.Cmd):
                     else:
                         print("** instance id missing **")
                 elif command.startswith("update(") and command.endswith(")"):
-                    args = command[7:-1].split(', ')
-                    if len(args) == 3:
-                        id_str, attr_name, attr_value = args
-                        self.do_update(f"{class_name} {id_str.strip()} {attr_name.strip()} {attr_value.strip()}")
+                    args = command[7:-1].split(', ', 1)
+                    if len(args) == 2:
+                        id_str = args[0].strip()
+                        if args[1].startswith('{') and args[1].endswith('}'):
+                            try:
+                                dict_str = args[1]
+                                update_dict = json.loads(dict_str.replace("'", '"'))
+                                for key, value in update_dict.items():
+                                    self.do_update(f"{class_name} {id_str} {key} {value}")
+                            except json.JSONDecodeError:
+                                print("** invalid dictionary format **")
+                        else:
+                            attr_name, attr_value = args[1].split(', ')
+                            self.do_update(f"{class_name} {id_str} {attr_name.strip()} {attr_value.strip()}")
                     else:
                         print("** incorrect arguments for update **")
                 else:
@@ -188,6 +199,29 @@ class HBNBCommand(cmd.Cmd):
 
         count = sum(1 for obj in storage.all().values() if obj.__class__.__name__ == class_name)
         print(count)
+    
+    def update_instance_with_dict(self, class_name, instance_id, update_dict):
+        """Helper function to update an instance based on a dictionary representation."""
+        if class_name not in self.classes:
+            print("** class doesn't exist **")
+            return
+
+        key = f"{class_name}.{instance_id}"
+        obj = storage.all().get(key)
+
+        if not obj:
+            print("** no instance found **")
+            return
+
+        for attr_name, attr_value in update_dict.items():
+            if hasattr(obj, attr_name):
+                attr_type = type(getattr(obj, attr_name))
+                try:
+                    attr_value = attr_type(attr_value)
+                except ValueError:
+                    continue
+            setattr(obj, attr_name, attr_value)
+        obj.save()
 
 
 if __name__ == '__main__':
